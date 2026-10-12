@@ -27,18 +27,37 @@ public class Main {
                 case 4:   // Add a rider
                     break;
                 case 5:   // List all drivers
+                    printList(system.getAllDrivers());
                     break;
                 case 6:   // Search for drivers by vehicle type
                     break;
                 case 7:   // Add a driver
+                    try {
+                        int id = readInt("Driver ID: ");
+                        String name = readText("Full name: ");
+                        String phone = readText("Phone (10 digits): ");
+                        String plate = readText("Vehicle plate (e.g., ABC1234): ");
+                        String type = readText("Vehicle type (SEDAN, LUXURY_SEDAN, SUV, VAN): ");
+                        Driver driver = new Driver(id, name, phone, plate, VehicleType.valueOf(type.toUpperCase()));
+                        if (system.addDriver(driver))
+                            System.out.println("Driver added successfully.");
+                        else
+                            System.out.println("Failed: duplicate driver ID or vehicle plate.");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Failed: " + e.getMessage());
+                    }
                     break;
                 case 8:   // List all rides alphabetically by pickup location
                     break;
                 case 9:   // Search for rides by pickup location
+                    String location = readText("Pickup location: ");
+                    printList(system.searchRidesByPickupLocation(location));
                     break;
                 case 10:  // Search for rides by rider name
                     break;
                 case 11:  // List the participants of a shared ride by pickup location
+                    String sharedLocation = readText("Pickup location: ");
+                    printList(system.getSharedRideParticipants(sharedLocation));
                     break;
                 case 12:  // Add a ride (private or shared)
                     break;
