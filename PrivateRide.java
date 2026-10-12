@@ -1,49 +1,36 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+package com.mycompany.ds;
 
-/**
- *
- * @author 96654
- */
 public class PrivateRide extends Ride implements IPrivateRide {
-    
-    private IRider rider;
-
-    public PrivateRide(String pickupLocation, IDateTime pickupTime, IDateTime dropoffTime, String dropoffLocation, IDriver driver, IRider rider) {
-        super(pickupLocation, pickupTime, dropoffTime, dropoffLocation, driver);
-        if(rider == null){
-        throw new IllegalArgumentException ("Rider must not null");   
-    }
-        this.rider=rider;
-    }
-
-    @Override
-    public IRider getRider() {
-        return rider;
-    }
-@Override
-    public void setRider(IRider rider) {
-        if(rider == null)
-        throw new IllegalArgumentException ("Rider must not null"); 
-        
-        this.rider = rider;
-    }
-    
-          @Override
-  public boolean hasRider(int riderId){
-      return rider.getId()==riderId;
-  }
   
-  @Override
-  public String toString(){
-      return "["+ super.toString()+ "Rider:"+ rider.getName()+"ID :"+ rider.getId()+"]";
-  }
-    
-    
-    
-    
-    
-    
+private IRider rider;
+ 
+//construct
+public PrivateRide(String pickupLocation,IDateTime pickupTime,IDateTime dropoffTime,String dropoffLocation,IDriver driver,IRider rider){
+super(pickupLocation,pickupTime,dropoffTime,dropoffLocation,driver);
+this.rider=rider;
+}
+ 
+// Returns the rider assigned to this private ride.
+@Override
+public IRider getRider() {
+return rider;
+}
+
+// Sets the rider assigned to this private ride.
+@Override
+public void setRider(IRider rider) {
+    this.rider=rider;
+}
+
+// Checks whether a rider participates in this ride.
+@Override
+public boolean hasRider(int riderId) {
+    return rider != null && rider.getId() == riderId;
+}
+
+@Override
+public String toString() {
+   return "Private Ride #" + getRideId()+ " | " + getPickupLocation() + " (" + getPickupTime().format() + ")"+ " -> " + getDropoffLocation() + " (" + getDropoffTime().format() + ")"+ " | Driver: " + (getDriver() == null ? "none" : getDriver().getName())+ " | Rider: " + (rider == null ? "none" : rider.getName());
+}
+
 }
