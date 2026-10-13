@@ -1,3 +1,5 @@
+package com.mycompany.ds;
+
 import java.util.Scanner;
 
 // Command-line menu: the only class that reads input and prints output.
@@ -20,17 +22,45 @@ public class Main {
             switch (choice) {
                 case 1:   // List all riders
                     break;
-                case 2:   // Search for riders by home city
+                    
+                case 2:   // Search for riders by home city 
+                    String city = readText("Home City: ");
+                    printList(system.findByHomeCity(city));     
                     break;
+                    
                 case 3:   // Search for riders by name
                     break;
-                case 4:   // Add a rider
+                    
+                case 4:   // Add a rider 
+                    try {
+                        int riderId = readInt("Rider ID: ");
+                        String riderName = readText("Full name: ");
+                        String riderPhone = readText("Phone (10 digits): ");
+                        String homeCity = readText("Home city: ");
+                        Rider rider = new Rider(riderId, riderName, riderPhone, homeCity);
+                        if (system.addRider(rider))
+                            System.out.println("Rider added successfully.");
+                         else
+                            System.out.println("Failed: duplicate rider ID.");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Failed: " + e.getMessage());
+                    }
                     break;
+                    
                 case 5:   // List all drivers
                     printList(system.getAllDrivers());
                     break;
-                case 6:   // Search for drivers by vehicle type
+                    
+                case 6:   // Search for drivers by vehicle type 
+                    try {
+                        String vType = readText("Vehicle type (SEDAN, LUXURY_SEDAN, SUV, VAN): ");
+                        printList(system.findByVehicleType(
+                        VehicleType.valueOf(vType.toUpperCase())));
+                    } catch (IllegalArgumentException e) {
+                       System.out.println("Failed: invalid vehicle type.");
+                    }
                     break;
+                    
                 case 7:   // Add a driver
                     try {
                         int id = readInt("Driver ID: ");
@@ -47,12 +77,16 @@ public class Main {
                         System.out.println("Failed: " + e.getMessage());
                     }
                     break;
-                case 8:   // List all rides alphabetically by pickup location
+                    
+                case 8:   // List all rides alphabetically by pickup location 
+                    printList(system.getRidesSortedByPickupLocation());
                     break;
+                    
                 case 9:   // Search for rides by pickup location
                     String location = readText("Pickup location: ");
                     printList(system.searchRidesByPickupLocation(location));
                     break;
+                    
                 case 10:  // Search for rides by rider name
                     break;
                 case 11:  // List the participants of a shared ride by pickup location
