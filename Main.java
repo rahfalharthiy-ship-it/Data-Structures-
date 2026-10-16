@@ -1,4 +1,8 @@
-package com.mycompany.ds;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
 
 import java.util.Scanner;
 
@@ -21,6 +25,7 @@ public class Main {
 
             switch (choice) {
                 case 1:   // List all riders
+                    printList(system.getAllRiders());                
                     break;
                     
                 case 2:   // Search for riders by home city 
@@ -29,6 +34,8 @@ public class Main {
                     break;
                     
                 case 3:   // Search for riders by name
+                String searchName=readText("Rider full name");
+                printList(system.searchRidersByName(searchName));
                     break;
                     
                 case 4:   // Add a rider 
@@ -88,13 +95,57 @@ public class Main {
                     break;
                     
                 case 10:  // Search for rides by rider name
+                    String riderFullName=readText("Rider Full name");
+                    printList(system.searchRidesByRiderName(riderFullName));
                     break;
                 case 11:  // List the participants of a shared ride by pickup location
                     String sharedLocation = readText("Pickup location: ");
                     printList(system.getSharedRideParticipants(sharedLocation));
                     break;
-                case 12:  // Add a ride (private or shared)
+                case 12: { // Add a ride (private or shared)
+               String rideType =readText("Ride type (PRIVATE or SHARED: ").toUpperCase();
+                if(!rideType.equals("PRIVATE")&& !rideType.equals("SHARED")){
+                   System.out.println("Faild: ride type mus be PRIVATE or SHARED ");
+                  break; 
+                }
+                
+                
+                try{
+                    String pickupLocation=readText("Pickup Location");
+                    IDateTime pickupTime= DateTime.parse(readText("Pickup date/ time(MM/DD/YYYY HH:MM):"));
+                    IDateTime dropoffTime= DateTime.parse(readText("Drop-of date/ time(MM/DD/YYYY HH:MM):"));
+                    String dropoffLocation= readText("Drop-of Location: ");
+                    int driverId= readInt("Driver ID");
+                    
+                    boolean scheduled;
+                    if(rideType.equals("PRIVATE")){// praivate has exactly one ride
+                       int riderId= readInt("Rider ID:");
+                       scheduled=system.schedulePraivateRide(pickupLocation, pickupTime, dropoffTime, dropoffLocation, riderId, driverId);
+                    }
+                       else{ //sheard ride needs more than one rider
+                        int count= readInt=("Number of Riders at Least 2");
+                        if(count<2){
+                          System.out.println("Faild: Shared needes at Least 2 riders");
+                        break;}
+                        
+                        int[] riderIds= new int[count];
+                    for (int i=0 ; i<count; i++){
+                        riderIds[i]=readInt("Rider ID: " +(i+1));
+                    }//for
+                    scheduled=system.scheduleSharedRide(pickupLocation, pickupTime, dropoffTime, dropoffLocation, riderIds, driverId);
+                    } //else      
+                    
+                    if(scheduled)
+        System.out.println("Ride scheduled Successfully ");
+                    else
+               System.out.println("Failed : rider not found  ");
+                }//try
+                catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e){
+                   System.out.println("Failed :inavlid data/time.Use Format MM/DD/YYYY  HH:MM "); 
+                }
+                            
                     break;
+                }
                 case 0:
                     System.out.println("Goodbye!");
                     break;
@@ -157,3 +208,4 @@ public class Main {
         return input.nextLine().trim();
     }
 }
+
