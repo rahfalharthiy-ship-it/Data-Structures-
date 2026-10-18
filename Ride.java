@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
-
-    public abstract class Ride implements IRide {
+ public abstract class Ride implements IRide {
 
     private static int nextRideId=1;/*genrator for unice ride*/
    
