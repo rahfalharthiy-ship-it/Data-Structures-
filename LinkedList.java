@@ -1,4 +1,4 @@
-// Course singly linked list (Lecture 08-10).
+
 public class LinkedList<T> implements List<T> {
     private Node<T> head;
     private Node<T> current;
